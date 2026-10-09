@@ -6,7 +6,7 @@
 
 try:
     from swsscommon import swsscommon
-    from sonic_py_common import daemon_base, logger
+    from sonic_py_common import logger
     from sonic_platform.sysfs import write_sysfs_file
 except ImportError as e:
     raise ImportError (str(e) + " - required module not found")
@@ -24,7 +24,7 @@ sonic_logger = logger.Logger(SYSLOG_IDENTIFIER)
 
 def wait_for_port_init_done():
     # Connect to APPL_DB and subscribe to PORT table notifications
-    appl_db = daemon_base.db_connect("APPL_DB")
+    appl_db = swsscommon.DBConnector("APPL_DB", 0, False)
     sel = swsscommon.Select()
     sst = swsscommon.SubscriberStateTable(appl_db, swsscommon.APP_PORT_TABLE_NAME)
     sel.addSelectable(sst)
@@ -46,7 +46,7 @@ def wait_for_port_init_done():
 
 def subscribe_port_config_change():
     sel = swsscommon.Select()
-    config_db = daemon_base.db_connect("CONFIG_DB")
+    config_db = swsscommon.DBConnector("CONFIG_DB", 0, False)
     port_tbl = swsscommon.SubscriberStateTable(config_db, swsscommon.CFG_PORT_TABLE_NAME)
     port_tbl.filter = ['admin_status']
     sel.addSelectable(port_tbl)
