@@ -116,7 +116,7 @@ class Thermal(ThermalBase):
         """
         if self.index >= THERMAL_NUM-3 and self.index <= THERMAL_NUM-1:
             try:
-                db = SonicV2Connector()
+                db = SonicV2Connector(use_unix_socket_path=True)
                 db.connect(db.STATE_DB)
                 data_dict = db.get_all(db.STATE_DB, 'ASIC_TEMPERATURE_INFO')
                 if self.index == THERMAL_NUM-1:

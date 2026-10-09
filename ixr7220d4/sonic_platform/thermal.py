@@ -112,7 +112,7 @@ class Thermal(ThermalBase):
             nearest thousandth of one degree Celsius, e.g. 30.125
         """
         if self.index == len(self.THERMAL_NAME):
-            db = SonicV2Connector()
+            db = SonicV2Connector(use_unix_socket_path=True)
             db.connect(db.STATE_DB)
             data_dict = db.get_all(db.STATE_DB, 'ASIC_TEMPERATURE_INFO')
             thermal_tmp = float(data_dict['maximum_temperature'])
