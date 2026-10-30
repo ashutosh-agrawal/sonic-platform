@@ -24,7 +24,7 @@ sonic_logger = logger.Logger(SYSLOG_IDENTIFIER)
 
 def wait_for_port_init_done():
     # Connect to APPL_DB and subscribe to PORT table notifications
-    appl_db = daemon_base.db_connect("APPL_DB")
+    appl_db = daemon_base.db_connect("APPL_DB", use_tcp=False)
     sel = swsscommon.Select()
     sst = swsscommon.SubscriberStateTable(appl_db, swsscommon.APP_PORT_TABLE_NAME)
     sel.addSelectable(sst)
@@ -46,7 +46,7 @@ def wait_for_port_init_done():
 
 def subscribe_port_config_change():
     sel = swsscommon.Select()
-    config_db = daemon_base.db_connect("CONFIG_DB")
+    config_db = daemon_base.db_connect("CONFIG_DB", use_tcp=False)
     port_tbl = swsscommon.SubscriberStateTable(config_db, swsscommon.CFG_PORT_TABLE_NAME)
     port_tbl.filter = ['admin_status']
     sel.addSelectable(port_tbl)
